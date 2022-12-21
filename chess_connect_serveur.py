@@ -6,7 +6,9 @@ from datetime import datetime
 import traceback
 
 ##listes/variables
-codes = [
+codes = ["lance_le_jeu", #0
+        "je_joue", #1
+        "fin_du_jeu" #2
         ] #codes pour communiqué avec le serveur
 
 
@@ -31,7 +33,13 @@ historique.close()
 
 def goto_commande(com, idUser) :
     # global
-    pass
+    print("comiku : ", com)
+    if com[0] in codes[1] :
+        dat = " ".join(com)
+        if idUser == 0 :
+            message[1].append(dat)
+        else :
+            message[0].append(dat)
     
 
 
@@ -95,7 +103,12 @@ def connection():
         adresse.append(adrese)
         EnvoiInfo().start()
         RecoiInfo().start()
-
+    if randint(0,1) == 0 :
+        prout = ("w", "b")
+    else :
+        prout = ("b", "w")
+    message[0].append(codes[0]+" "+prout[0])
+    message[1].append(codes[0]+" "+prout[1])
     sys.exit()
 
 host, port = ("", 5555)

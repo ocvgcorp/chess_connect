@@ -29,15 +29,20 @@ if f.read() == "true" :
 else :
     compilation = False
 
-
+codes = ["lance_le_jeu", #0
+        "je_joue", #1
+        "fin_du_jeu" #2
+        ] #codes pour communiqué avec le serveur
 
 ##var/lists global
 hold_clic = False
 fps = 30
 cplat_size = (8,6)
+a_moi_djouer = None #changé en True uniquement si je suis joeuru blanc (white)
 coords_pre_move = []
 my_color = None #b for black and w for white #### blanc = joueur rouge, noir = joueur jaune
 coords_select = None
+con_serv = None
 echec = None
 echec_et_mat = None
 echec_pre_move = []
@@ -79,18 +84,26 @@ font3 = pygame.font.SysFont("comicsansms", int(1920/18))
 bg_wait_player = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/background/bg_wait_player.png")).convert(), (1920, 1080))
 chess_board = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/background/chess.png")).convert(), (851, 851))
 connect_board = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/background/connect.png")).convert(), (851, 637))
+bg_in_game = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/background/bg_in_game.png")).convert(), (1920, 1080))
 
 #pions
+cvide = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/connect_pions/cvide.png")).convert_alpha(), (85,85))
 cred = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/connect_pions/cred.png")).convert_alpha(), (85,85))
 cyel = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/connect_pions/cyel.png")).convert_alpha(), (85,85))
 
 
 
+#autre in chess
+going_to_move = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/going_to_move.png")).convert_alpha(), (85,85))
+going_to_eat = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/going_to_eat.png")).convert_alpha(), (85,85))
+pion_selected = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/pion_selected.png")).convert_alpha(), (85,85))
+eche = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/echec.png")).convert_alpha(), (85,85))
+eche_mat = pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/echec_mat.png")).convert_alpha(), (85,85))
 
 
 
 ch_pions = {}
-name_chpions = ["bishop", "king", "knight", "pawn", "queen"]
+name_chpions = ["bishop", "king", "knight", "pawn", "queen", "rook"]
 
 
 #var/list/dicts
@@ -102,21 +115,62 @@ for y in range(cplat_size[1]) :
 
 
 
+def get_next_line(text, ind) :
+    try :
+        while True :
+            if text[ind] == "\n" :
+                return ind
+            ind+=1
+    except :
+        return 0
 
 
 
+#threads serveur
+def goto_command(com) :
+    global bataille_loop, wait_loop, ch_pions, my_color, a_moi_djouer
+    if com[0] in codes[0] :
+        pass
+    elif com[0] in codes[1] :
+        pass
 
 
 
+class Connection(threading.Thread) :
+    def __init__(self):
+        threading.Thread.__init__(self)
+    def run(self) :
+        global con_serv
+        ##thread+connection
+        if compilation :
+            host, port = ("localhost", 5555)
+        try :
+            con_serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            con_serv.connect((host, port))
+            print("connection effectué")
+
+            while True :
+                try :
+                    data = con_serv.recv(1024)
+                    data = data.decode("utf8")
+                    com = data.split(" ")
+                    goto_command(com)
+                except Exception :
+                    traceback.print_exc()
+
+        except Exception :
+            traceback.print_exc()
+            print("<system> : Connexion au serveur échoué")
+        finally :
+            if con_serv != None :
+                print("connection fermé")
+                con_serv.close()
+            con_serv = None
+            sys.exit()
 
 
 
-
-
-
-
-
-
+#####fonction auxilière
 
 
 #threads
@@ -144,6 +198,8 @@ thread_anti_hold_clic.start()
 
 
 
+#se connecter
+Connection().start()
 
 
 
@@ -179,6 +235,9 @@ while main_loop:
 
 
         X, Y = pygame.mouse.get_pos()
+
+
+
 
         #affichage pions connect
         for y in range(cplat_size[1]) :
