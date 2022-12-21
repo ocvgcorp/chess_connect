@@ -873,6 +873,11 @@ def test_win_connect(x) :
     return False
 
 
+def my_copy(dict) :
+    dict2 = {}
+    for key in dict.keys() :
+        dict2[key] = dict[key]
+    return dict2
 
 #threads
 def anti_hold_clic():
