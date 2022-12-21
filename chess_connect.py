@@ -410,3 +410,9 @@ while main_loop:
     
 os._exit(1)
 
+""" touche affilié à quelle player :
+zqsd = player 1
+sourie : {mouse_up, clic gauche, mouse_doawn, clic droit} = player 2
+flèche directionnel = player 3
+jn,; ou ijkl = player 4
+"""
