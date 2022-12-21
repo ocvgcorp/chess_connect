@@ -406,27 +406,13 @@ thread_anti_hold_clic.start()
 
 
 
-
-
-
-
-
-
-
-
-
 #se connecter
 Connection().start()
 
 
-
 #Boucle infinie
 while main_loop:
-    
-
     while wait_loop :
-
-
 		#Limitation de vitesse de la boucle
         clock.tick(fps) # 30 fps
 
@@ -449,9 +435,7 @@ while main_loop:
             if event.type == QUIT or keys[K_LSHIFT] and keys[K_ESCAPE] :     #Si un de ces événements est de type QUIT
                 main_loop = False
                 bataille_loop = False
-
-
-        X, Y = pygame.mouse.get_pos()
+        X, Y= pygame.mouse.get_pos()
         for y in range(8) :
             for x in range(8) :
             
@@ -480,7 +464,6 @@ while main_loop:
         #affichage des boards
         window.blit(chess_board, (54, 114)) 
         window.blit(connect_board, (1015, 219)) 
-
         #affichage pions chess
         if coords_select != None and len(ch_pions[coords_select]) != 0 and my_color+"_" in ch_pions[coords_select][0] and cplateau[(coords_select[0], 5)] == cvide:
             window.blit(pion_selected, (74+coords_select[0]*104, 851-coords_select[1]*103))
@@ -494,20 +477,16 @@ while main_loop:
                 window.blit(going_to_move, (74+im[1][0]*104, 851-im[1][1]*103))
             else :
                 window.blit(going_to_eat, (74+im[1][0]*104, 851-im[1][1]*103))
-        if echec != None :
+        if echec != None:
             window.blit(eche, (74+echec[0]*104, 851-echec[1]*103))
         if echec_et_mat != None :
             window.blit(eche_mat, (74+echec_et_mat[0]*104, 851-echec_et_mat[1]*103))
-
-
 
         #affichage pions connect
         for y in range(cplat_size[1]) :
             for x in range(cplat_size[0]) :
                 window.blit(cplateau[(x,y)], (1034+x*104, 757-y*104))
-
         pygame.display.flip()
-    
 os._exit(1)
 
 """ touche affilié à quelle player :
