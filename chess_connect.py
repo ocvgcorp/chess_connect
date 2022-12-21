@@ -130,7 +130,112 @@ def get_next_line(text, ind) :
 def goto_command(com) :
     global bataille_loop, wait_loop, ch_pions, my_color, a_moi_djouer
     if com[0] in codes[0] :
-        pass
+        if com[1] == "b" :
+            a_moi_djouer = False
+            my_color = "b"
+            ch_pions = {}
+            ch_pions[(2, 7)] = ["w_bishop1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_bishop.png")).convert_alpha(), (90,90)), (2, 7)]
+            ch_pions[(5, 7)] = ["w_bishop2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_bishop.png")).convert_alpha(), (90,90)), (5, 7)]
+
+            ch_pions[(4, 7)] = ["w_king", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_king.png")).convert_alpha(), (90,90)), (4, 7)]
+
+            ch_pions[(1, 7)] = ["w_knight1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_knight.png")).convert_alpha(), (90,90)), (1, 7)]
+            ch_pions[(6, 7)] = ["w_knight2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_knight.png")).convert_alpha(), (90,90)), (6, 7)]
+
+            ch_pions[(3, 7)] = ["w_queen", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_queen.png")).convert_alpha(), (90,90)), (3, 7)]
+
+            ch_pions[(0, 7)] = ["w_rook1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_rook.png")).convert_alpha(), (90,90)), (0, 7)]
+            ch_pions[(7, 7)] = ["w_rook2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_rook.png")).convert_alpha(), (90,90)), (7, 7)]
+
+            ch_pions[(0, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (0, 6)]
+            ch_pions[(1, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (1, 6)]
+            ch_pions[(2, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (2, 6)]
+            ch_pions[(3, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (3, 6)]
+            ch_pions[(4, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (4, 6)]
+            ch_pions[(5, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (5, 6)]
+            ch_pions[(6, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (6, 6)]
+            ch_pions[(7, 6)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (7, 6)]
+            #----------------------
+            ch_pions[(2, 0)] = ["b_bishop1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_bishop.png")).convert_alpha(), (90,90)), (2, 0)]
+            ch_pions[(5, 0)] = ["b_bishop2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_bishop.png")).convert_alpha(), (90,90)), (5, 0)]
+
+            ch_pions[(4, 0)] = ["b_king", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_king.png")).convert_alpha(), (90,90)), (4, 0)]
+
+            ch_pions[(1, 0)] = ["b_knight1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_knight.png")).convert_alpha(), (90,90)), (1, 0)]
+            ch_pions[(6, 0)] = ["b_knight2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_knight.png")).convert_alpha(), (90,90)), (6, 0)]
+
+            ch_pions[(3, 0)] = ["b_queen", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_queen.png")).convert_alpha(), (90,90)), (3, 0)]
+
+            ch_pions[(0, 0)] = ["b_rook1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_rook.png")).convert_alpha(), (90,90)), (0, 0)]
+            ch_pions[(7, 0)] = ["b_rook2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_rook.png")).convert_alpha(), (90,90)), (7, 0)]
+
+            ch_pions[(0, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (0, 1)]
+            ch_pions[(1, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (1, 1)]
+            ch_pions[(2, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (2, 1)]
+            ch_pions[(3, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (3, 1)]
+            ch_pions[(4, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (4, 1)]
+            ch_pions[(5, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (5, 1)]
+            ch_pions[(6, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (6, 1)]
+            ch_pions[(7, 1)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (7, 1)]
+
+
+
+            for y in range(2, 6) :
+                for x in range(8) :
+                    ch_pions[(x, y)] = []
+        else :
+            a_moi_djouer = True
+            my_color = "w"
+            ch_pions = {}
+            ch_pions[(2, 7)] = ["b_bishop1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_bishop.png")).convert_alpha(), (90,90)), (2, 7)]
+            ch_pions[(5, 7)] = ["b_bishop2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_bishop.png")).convert_alpha(), (90,90)), (5, 7)]
+
+            ch_pions[(4, 7)] = ["b_king", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_king.png")).convert_alpha(), (90,90)), (4, 7)]
+
+            ch_pions[(1, 7)] = ["b_knight1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_knight.png")).convert_alpha(), (90,90)), (1, 7)]
+            ch_pions[(6, 7)] = ["b_knight2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_knight.png")).convert_alpha(), (90,90)), (6, 7)]
+
+            ch_pions[(3, 7)] = ["b_queen", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_queen.png")).convert_alpha(), (90,90)), (3, 7)]
+
+            ch_pions[(0, 7)] = ["b_rook1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_rook.png")).convert_alpha(), (90,90)), (0, 7)]
+            ch_pions[(7, 7)] = ["b_rook2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_rook.png")).convert_alpha(), (90,90)), (7, 7)]
+
+            ch_pions[(0, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (0, 6)]
+            ch_pions[(1, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (1, 6)]
+            ch_pions[(2, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (2, 6)]
+            ch_pions[(3, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (3, 6)]
+            ch_pions[(4, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (4, 6)]
+            ch_pions[(5, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (5, 6)]
+            ch_pions[(6, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (6, 6)]
+            ch_pions[(7, 6)] = ["b_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/b_pawn.png")).convert_alpha(), (90,90)), (7, 6)]
+            #----------------------
+            ch_pions[(2, 0)] = ["w_bishop1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_bishop.png")).convert_alpha(), (90,90)), (2, 0)]
+            ch_pions[(5, 0)] = ["w_bishop2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_bishop.png")).convert_alpha(), (90,90)), (5, 0)]
+
+            ch_pions[(4, 0)] = ["w_king", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_king.png")).convert_alpha(), (90,90)), (4, 0)]
+
+            ch_pions[(1, 0)] = ["w_knight1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_knight.png")).convert_alpha(), (90,90)), (1, 0)]
+            ch_pions[(6, 0)] = ["w_knight2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_knight.png")).convert_alpha(), (90,90)), (6, 0)]
+
+            ch_pions[(3, 0)] = ["w_queen", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_queen.png")).convert_alpha(), (90,90)), (3, 0)]
+
+            ch_pions[(0, 0)] = ["w_rook1", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_rook.png")).convert_alpha(), (90,90)), (0, 0)]
+            ch_pions[(7, 0)] = ["w_rook2", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_rook.png")).convert_alpha(), (90,90)), (7, 0)]
+
+            ch_pions[(0, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (0, 1)]
+            ch_pions[(1, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (1, 1)]
+            ch_pions[(2, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (2, 1)]
+            ch_pions[(3, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (3, 1)]
+            ch_pions[(4, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (4, 1)]
+            ch_pions[(5, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (5, 1)]
+            ch_pions[(6, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (6, 1)]
+            ch_pions[(7, 1)] = ["w_pawn", pygame.transform.scale(pygame.image.load(resource_path0("./assets/images/pions/chess_pions/w_pawn.png")).convert_alpha(), (90,90)), (7, 1)]
+
+            for y in range(2, 6) :
+                for x in range(8) :
+                    ch_pions[(x, y)] = []
+        wait_loop = False
+        bataille_loop = True
     elif com[0] in codes[1] :
         pass
 
@@ -235,7 +340,52 @@ while main_loop:
 
 
         X, Y = pygame.mouse.get_pos()
+        for y in range(8) :
+            for x in range(8) :
+            
+                if 74+x*104 < X < 74+(x+1)*104 and 955-(y+1)*104 < Y < 955-y*104 and a_moi_djouer :
+                    if pygame.mouse.get_pressed()[0] and hold_clic == False :
+                        if (x, y) in [k[1] for k in coords_pre_move] :
+                            a_moi_djouer = False
+                            coords_pre_move = []
+                            dat = codes[1]+" "+str(coords_select[0])+" "+str(coords_select[1])+" "+str(x)+" "+str(y)
+                            con_serv.send(dat.encode("utf8"))
+                            ch_pions[coords_select], ch_pions[(x, y)] = [], ch_pions[coords_select]
+                            
+                            ajout_connect_pions(coords_select[0], my_color)
+                            win = test_win_connect(coords_select[0])
+                            coords_select = None
+                            if win :
+                                print("fin")
+                            echec = None
+                        else :
+                            ajout_pre_move_visualisation(x, y)
+                            coords_select = (x, y)
+                        
 
+        window.blit(bg_in_game, (0,0))
+
+        #affichage des boards
+        window.blit(chess_board, (54, 114)) 
+        window.blit(connect_board, (1015, 219)) 
+
+        #affichage pions chess
+        if coords_select != None and len(ch_pions[coords_select]) != 0 and my_color+"_" in ch_pions[coords_select][0] and cplateau[(coords_select[0], 5)] == cvide:
+            window.blit(pion_selected, (74+coords_select[0]*104, 851-coords_select[1]*103))
+        for y in range(8) :
+            for x in range(8) :
+                if len(ch_pions[(x,y)]) != 0 :
+                    window.blit(ch_pions[(x,y)][1], (74+x*104, 851-y*103))
+
+        for im in coords_pre_move :
+            if im[0] == "move_to_vide" :
+                window.blit(going_to_move, (74+im[1][0]*104, 851-im[1][1]*103))
+            else :
+                window.blit(going_to_eat, (74+im[1][0]*104, 851-im[1][1]*103))
+        if echec != None :
+            window.blit(eche, (74+echec[0]*104, 851-echec[1]*103))
+        if echec_et_mat != None :
+            window.blit(eche_mat, (74+echec_et_mat[0]*104, 851-echec_et_mat[1]*103))
 
 
 
@@ -248,3 +398,9 @@ while main_loop:
     
 os._exit(1)
 
+""" touche affilié à quelle player :
+zqsd = player 1
+sourie : {mouse_up, clic gauche, mouse_doawn, clic droit} = player 2
+flèche directionnel = player 3
+jn,; ou ijkl = player 4
+"""
