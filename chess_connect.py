@@ -768,6 +768,110 @@ def ajout_pre_move_visualisation(x, y) :
         coords_select = None
 
 
+def ajout_connect_pions(x, col) :
+    global cplateau
+    for k in range(6) :
+        if cplateau[(x, k)] == cvide :
+            if col == "w" :
+                cplateau[(x, k)] = cred
+                break
+            else :
+                cplateau[(x, k)] = cyel
+                break
+
+def test_win_connect(x) :
+    if my_color == "b" :
+        color_here = cyel
+    else :
+        color_here = cred
+    for k in range(5, -1, -1) :
+        if cplateau[(x, k)] == color_here :
+            y = k
+            break
+#check vartical
+    cumul_var = 1
+    for k in range(1, 4) :
+        try :
+            if cplateau[(x, y-k)] == color_here :
+                cumul_var+=1
+                if cumul_var == 4 :
+                    return True
+            else :
+                break
+        except :
+            break
+
+
+#check horizontal
+    cumul_var = 1
+    for k in range(1, 4) :
+        try :
+            if cplateau[(x-k, y)] == color_here :
+                cumul_var+=1
+                if cumul_var == 4 :
+                    return True
+            else :
+                break
+        except :
+            break
+    for k in range(1, 4) :
+        try :
+            if cplateau[(x+k, y)] == color_here :
+                cumul_var+=1
+                if cumul_var == 4 :
+                    return True
+            else :
+                break
+        except :
+            break
+
+
+#chack diagonal
+    cumul_var = 1
+    for k in range(1, 4) :
+        try :
+            if cplateau[(x-k, y-k)] == color_here :
+                cumul_var+=1
+                if cumul_var == 4 :
+                    return True
+            else :
+                break
+        except :
+            break
+    for k in range(1, 4) :
+        try :
+            if cplateau[(x+k, y+k)] == color_here :
+                cumul_var+=1
+                if cumul_var == 4 :
+                    return True
+            else :
+                break
+        except :
+            break
+
+    cumul_var = 1
+    for k in range(1, 4) :
+        try :
+            if cplateau[(x-k, y+k)] == color_here :
+                cumul_var+=1
+                if cumul_var == 4 :
+                    return True
+            else :
+                break
+        except :
+            break
+    for k in range(1, 4) :
+        try :
+            if cplateau[(x+k, y-k)] == color_here :
+                cumul_var+=1
+                if cumul_var == 4 :
+                    return True
+            else :
+                break
+        except :
+            break
+    return False
+
 
 
 #threads
