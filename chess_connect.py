@@ -388,6 +388,254 @@ def test_echec(ch_pions) :
     if king_coords in pre_move :
         return True
     return False
+def test_mat() :
+        global echec_pre_move, echec_et_mat, echec, a_moi_djouer
+        echec_pre_move = {}
+        ###test Ajout mat chek (-----------------------------------------------------)
+        for y in range(8) :
+            for x in range(8) :
+                if len(ch_pions[(x, y)]) != 0 :
+                    if my_color+"_" in ch_pions[(x, y)][0] and "king" in ch_pions[(x, y)][0]:
+                        king_coords = (x, y)
+                    if "pawn" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+                        if y == 1 :
+                            dos = 3
+                        else :
+                            dos = 2
+                        for move in range(1, dos) :
+                            try :
+                                if cplateau[(x, 5)] == cvide :
+                                    if len(ch_pions[(x, y+move)]) == 0 :
+                                        ch_copy_pions = my_copy(ch_pions)
+                                        ch_copy_pions[(x, y)], ch_copy_pions[(x, y+move)] = [], ch_copy_pions[(x, y)]
+                                        if test_echec(ch_copy_pions) == False:
+                                            try :
+                                                len(echec_pre_move[(x, y)])
+                                                echec_pre_move[(x, y)].append(["move_to_vide", (x, y+move)])
+                                            except :
+                                                echec_pre_move[(x, y)] = [["move_to_vide", (x, y+move)]]
+                                    else :
+                                        break
+                            except :
+                                pass
+
+                        for move in [(1, 1), (-1, 1)] :
+                            try :
+                                if cplateau[(x, 5)] == cvide :
+                                    if len(ch_pions[(x+move[0], y+move[1])]) != 0 and my_color+"_" not in ch_pions[(x+move[0], y+move[1])][0]:
+                                        ch_copy_pions = my_copy(ch_pions)
+                                        ch_copy_pions[(x, y)], ch_copy_pions[(x+move[0], y+move[1])] = [], ch_copy_pions[(x, y)]
+                                        if test_echec(ch_copy_pions) == False:
+                                            try :
+                                                len(echec_pre_move[(x, y)])
+                                                echec_pre_move[(x, y)].append(["move_to_eat", (x+move[0], y+move[1])])
+                                            except :
+                                                echec_pre_move[(x, y)] = [["move_to_eat", (x+move[0], y+move[1])]]
+                            except :
+                                pass
+
+                    elif "knight" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+                        help_var_knight = [(-2, 1), (-2, -1), (-1, -2), (1, -2), (2-1), (2, 1), (1, 2), (-1, 2)]
+                        for move in help_var_knight :
+                            if cplateau[(x, 5)] == cvide:
+                                try :
+                                    if len(ch_pions[(x+move[0], y+move[1])]) == 0 :
+                                        ch_copy_pions = my_copy(ch_pions)
+                                        ch_copy_pions[(x, y)], ch_copy_pions[(x+move[0], y+move[1])] = [], ch_copy_pions[(x, y)]
+                                        if test_echec(ch_copy_pions) == False:
+                                            try :
+                                                len(echec_pre_move[(x, y)])
+                                                echec_pre_move[(x, y)].append(["move_to_vide", (x+move[0], y+move[1])])
+                                            except :
+                                                echec_pre_move[(x, y)] = [["move_to_vide", (x+move[0], y+move[1])]]
+                                    elif my_color+"_" not in ch_pions[(x+move[0], y+move[1])][0] :
+                                        ch_copy_pions = my_copy(ch_pions)
+                                        ch_copy_pions[(x, y)], ch_copy_pions[(x+move[0], y+move[1])] = [], ch_copy_pions[(x, y)]
+                                        if test_echec(ch_copy_pions) == False:
+                                            try :
+                                                len(echec_pre_move[(x, y)])
+                                                echec_pre_move[(x, y)].append(["move_to_eat", (x+move[0], y+move[1])])
+                                            except :
+                                                echec_pre_move[(x, y)] = [["move_to_eat", (x+move[0], y+move[1])]]
+                                except :
+                                    pass
+
+                    elif "rook" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+                        for move in [[(x, 0) for x in range(-1, -8, -1)], [(x, 0) for x in range(1, 8)], [(0, y) for y in range(-1, -8, -1)], [(0, y) for y in range(1, 8)]] :
+                            for moveplus in move :
+                                if cplateau[(x, 5)] == cvide :
+                                    try :
+                                        if len(ch_pions[(x+moveplus[0], y+moveplus[1])]) == 0 :
+                                            ch_copy_pions = my_copy(ch_pions)
+                                            ch_copy_pions[(x, y)], ch_copy_pions[(x+moveplus[0], y+moveplus[1])] = [], ch_copy_pions[(x, y)]
+                                            if test_echec(ch_copy_pions) == False:
+                                                try :
+                                                    len(echec_pre_move[(x, y)])
+                                                    echec_pre_move[(x, y)].append(["move_to_vide", (x+moveplus[0], y+moveplus[1])])
+                                                except :
+                                                    echec_pre_move[(x, y)] = [["move_to_vide", (x+moveplus[0], y+moveplus[1])]]
+                                        
+                                        elif my_color+"_" in ch_pions[(x+moveplus[0], y+moveplus[1])][0] :
+                                            break
+                                        else :
+                                            ch_copy_pions = my_copy(ch_pions)
+                                            ch_copy_pions[(x, y)], ch_copy_pions[(x+moveplus[0], y+moveplus[1])] = [], ch_copy_pions[(x, y)]
+                                            if test_echec(ch_copy_pions) == False:
+                                                try :
+                                                    len(echec_pre_move[(x, y)])
+                                                    echec_pre_move[(x, y)].append(["move_to_eat", (x+moveplus[0], y+moveplus[1])])
+                                                except :
+                                                    echec_pre_move[(x, y)] = [["move_to_eat", (x+moveplus[0], y+moveplus[1])]]
+                                            break
+                                    except :
+                                        break
+
+                    elif "king" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+                        for movex in [-1, 0, 1] :
+                            for movey in [-1, 0, 1] :
+                                if cplateau[(x, 5)] == cvide and not (movex == 0 and movey == 0):
+                                    # try :
+                                        if len(ch_pions[(x+movex, y+movey)]) == 0 :
+                                            ch_copy_pions = my_copy(ch_pions)
+                                            ch_copy_pions[(x, y)], ch_copy_pions[(x+movex, y+movey)] = [], ch_copy_pions[(x, y)]
+                                            if test_echec(ch_copy_pions) == False:
+                                                try :
+                                                    len(echec_pre_move[(x, y)])
+                                                    echec_pre_move[(x, y)].append(["move_to_vide", (x+movex, y+movey)])
+                                                except :
+                                                    echec_pre_move[(x, y)] = [["move_to_vide", (x+movex, y+movey)]]
+                                        elif my_color+"_" not in ch_pions[(x+movex, y+movey)][0] :
+                                            ch_copy_pions = my_copy(ch_pions)
+                                            ch_copy_pions[(x, y)], ch_copy_pions[(x+movex, y+movey)] = [], ch_copy_pions[(x, y)]
+                                            if test_echec(ch_copy_pions) == False:
+                                                try :
+                                                    len(echec_pre_move[(x, y)])
+                                                    echec_pre_move[(x, y)].append(["move_to_eat", (x+movex, y+movey)])
+                                                except :
+                                                    echec_pre_move[(x, y)] = [["move_to_eat", (x+movex, y+movey)]]
+                                    # except :
+                                    #     pass
+
+                    elif "bishop" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+                        for help_movex in [-1, 1] :
+                            for help_movey in [-1, 1] :
+                                for movexy in range(1, 9) :
+                                    if cplateau[(x, 5)] == cvide :
+                                        try :
+                                            if len(ch_pions[(x+movexy*help_movex, y+movexy*help_movey)]) == 0 :
+                                                ch_copy_pions = my_copy(ch_pions)
+                                                ch_copy_pions[(x, y)], ch_copy_pions[(x+movexy*help_movex, y+movexy*help_movey)] = [], ch_copy_pions[(x, y)]
+                                                if test_echec(ch_copy_pions) == False:
+                                                    try :
+                                                        len(echec_pre_move[(x, y)])
+                                                        echec_pre_move[(x, y)].append(["move_to_vide", (x+movexy*help_movex, y+movexy*help_movey)])
+                                                    except :
+                                                        echec_pre_move[(x, y)] = [["move_to_vide", (x+movexy*help_movex, y+movexy*help_movey)]]
+                                            elif my_color+"_" in ch_pions[(x+movexy*help_movex, y+movexy*help_movey)][0] :
+                                                break
+                                            else :
+                                                ch_copy_pions = my_copy(ch_pions)
+                                                ch_copy_pions[(x, y)], ch_copy_pions[(x+movexy*help_movex, y+movexy*help_movey)] = [], ch_copy_pions[(x, y)]
+                                                if test_echec(ch_copy_pions) == False:
+                                                    try :
+                                                        len(echec_pre_move[(x, y)])
+                                                        echec_pre_move[(x, y)].append(["move_to_eat", (x+movexy*help_movex, y+movexy*help_movey)])
+                                                    except :
+                                                        echec_pre_move[(x, y)] = [["move_to_eat", (x+movexy*help_movex, y+movexy*help_movey)]]
+                                                break
+                                        except :
+                                            break
+
+                    elif "queen" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+                        for help_movex in [-1, 1] :
+                            for help_movey in [-1, 1] :
+                                for movexy in range(1, 9) :
+                                    if cplateau[(x, 5)] == cvide :
+                                        try :
+                                            if len(ch_pions[(x+movexy*help_movex, y+movexy*help_movey)]) == 0 :
+                                                ch_copy_pions = my_copy(ch_pions)
+                                                ch_copy_pions[(x, y)], ch_copy_pions[(x+movexy*help_movex, y+movexy*help_movey)] = [], ch_copy_pions[(x, y)]
+                                                if test_echec(ch_copy_pions) == False:
+                                                    try :
+                                                        len(echec_pre_move[(x, y)])
+                                                        echec_pre_move[(x, y)].append(["move_to_vide", (x+movexy*help_movex, y+movexy*help_movey)])
+                                                    except :
+                                                        echec_pre_move[(x, y)] = [["move_to_vide", (x+movexy*help_movex, y+movexy*help_movey)]]
+                                            elif my_color+"_" in ch_pions[(x+movexy*help_movex, y+movexy*help_movey)][0] :
+                                                break
+                                            else :
+                                                ch_copy_pions = my_copy(ch_pions)
+                                                ch_copy_pions[(x, y)], ch_copy_pions[(x+movexy*help_movex, y+movexy*help_movey)] = [], ch_copy_pions[(x, y)]
+                                                if test_echec(ch_copy_pions) == False:
+                                                    try :
+                                                        len(echec_pre_move[(x, y)])
+                                                        echec_pre_move[(x, y)].append(["move_to_eat", (x+movexy*help_movex, y+movexy*help_movey)])
+                                                    except :
+                                                        echec_pre_move[(x, y)] = [["move_to_eat", (x+movexy*help_movex, y+movexy*help_movey)]]
+                                                break
+                                        except :
+                                            break
+
+                        for move in [[(x, 0) for x in range(-1, -8, -1)], [(x, 0) for x in range(1, 8)], [(0, y) for y in range(-1, -8, -1)], [(0, y) for y in range(1, 8)]] :
+                            for moveplus in move :
+                                if cplateau[(x, 5)] == cvide :
+                                    try :
+                                        if len(ch_pions[(x+moveplus[0], y+moveplus[1])]) == 0 :
+                                            ch_copy_pions = my_copy(ch_pions)
+                                            ch_copy_pions[(x, y)], ch_copy_pions[(x+moveplus[0], y+moveplus[1])] = [], ch_copy_pions[(x, y)]
+                                            if test_echec(ch_copy_pions) == False:
+                                                try :
+                                                    len(echec_pre_move[(x, y)])
+                                                    echec_pre_move[(x, y)].append(["move_to_vide", (x+moveplus[0], y+moveplus[1])])
+                                                except :
+                                                    echec_pre_move[(x, y)] = [["move_to_vide", (x+moveplus[0], y+moveplus[1])]]
+                                        
+                                        elif my_color+"_" in ch_pions[(x+moveplus[0], y+moveplus[1])][0] :
+                                            break
+                                        else :
+                                            ch_copy_pions = my_copy(ch_pions)
+                                            ch_copy_pions[(x, y)], ch_copy_pions[(x+moveplus[0], y+moveplus[1])] = [], ch_copy_pions[(x, y)]
+                                            if test_echec(ch_copy_pions) == False:
+                                                try :
+                                                    len(echec_pre_move[(x, y)])
+                                                    echec_pre_move[(x, y)].append(["move_to_eat", (x+moveplus[0], y+moveplus[1])])
+                                                except :
+                                                    echec_pre_move[(x, y)] = [["move_to_eat", (x+moveplus[0], y+moveplus[1])]]
+                                            break
+                                    except :
+                                        break
+
+
+
+
+
+
+        if len(echec_pre_move) == 0 :
+            echec_et_mat = king_coords
+            a_moi_djouer = False
+            print("fin")
+        else :
+            echec = king_coords
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #threads
