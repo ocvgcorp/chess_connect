@@ -288,6 +288,106 @@ class Connection(threading.Thread) :
 
 
 #####fonction auxilière
+def test_echec(ch_pions) :
+    global echec, echec_pre_move, echec_et_mat, a_moi_djouer
+    if my_color == "b" :
+        col = "w"
+    else :
+        col = "b"
+    pre_move = []
+    for y in range(8) :
+        for x in range(8) :
+            if len(ch_pions[(x, y)]) != 0 :
+                if col+"_" not in ch_pions[(x, y)][0] and "king" in ch_pions[(x, y)][0]:
+                    king_coords = (x, y)
+                elif  col+"_" in ch_pions[(x, y)][0] :
+                    if "pawn" in ch_pions[(x, y)][0]  :
+                        for move in [(1, 1), (-1, 1)] :
+                            try :
+                                if cplateau[(x, 5)] == cvide :
+                                    if len(ch_pions[(x+move[0], y-move[1])]) != 0 and my_color+"_" in ch_pions[(x+move[0], y-move[1])][0]:
+                                        pre_move.append((x+move[0], y-move[1]))
+                            except :
+                                pass
+
+                    elif "knight" in ch_pions[(x, y)][0]  :
+                        help_var_knight = [(-2, 1), (-2, -1), (-1, -2), (1, -2), (2-1), (2, 1), (1, 2), (-1, 2)]
+                        for move in help_var_knight :
+                            if cplateau[(x, 5)] == cvide:
+                                try :
+                                    if my_color+"_" in ch_pions[(x+move[0], y-move[1])][0] :
+                                        pre_move.append((x+move[0], y-move[1])) #appliquer un filtre jaune
+                                except :
+                                    pass
+
+                    elif "rook" in ch_pions[(x, y)][0]  :
+
+                        for move in [[(x, 0) for x in range(-1, -8, -1)], [(x, 0) for x in range(1, 8)], [(0, y) for y in range(-1, -8, -1)], [(0, y) for y in range(1, 8)]] :
+                            for moveplus in move :
+                                if cplateau[(x, 5)] == cvide :
+                                    try :
+                                        if col+"_" in ch_pions[(x+moveplus[0], y-moveplus[1])][0] :
+                                            break
+                                        elif my_color+"_" in ch_pions[(x+moveplus[0], y-moveplus[1])][0] :
+                                            pre_move.append((x+moveplus[0], y-moveplus[1])) #appliquer un filtre jaune
+                                            break
+                                    except :
+                                        break
+
+                    elif "king" in ch_pions[(x, y)][0]  :
+                        for movex in [-1, 0, 1] :
+                            for movey in [-1, 0, 1] :
+                                if cplateau[(x, 5)] == cvide and not (movex == 0 and movey == 0):
+                                    try :
+                                        if my_color+"_" in ch_pions[(x+movex, y-movey)][0] :
+                                            pre_move.append((x+movex, y-movey)) #appliquer un filtre jaune
+                                    except :
+                                        pass
+
+                    elif "bishop" in ch_pions[(x, y)][0]  :
+
+                        for help_movex in [-1, 1] :
+                            for help_movey in [-1, 1] :
+                                for movexy in range(1, 9) :
+                                    if cplateau[(x, 5)] == cvide :
+                                        try :
+                                            if col+"_" in ch_pions[(x+movexy*help_movex, y-movexy*help_movey)][0] :
+                                                break
+                                            elif my_color+"_" in ch_pions[(x+movexy*help_movex, y-movexy*help_movey)][0] :
+                                                pre_move.append((x+movexy*help_movex, y-movexy*help_movey)) #appliquer un filtre jaune
+                                                break
+                                        except :
+                                            break
+
+                    elif "queen" in ch_pions[(x, y)][0]  :
+
+                        for help_movex in [-1, 1] :
+                            for help_movey in [-1, 1] :
+                                for movexy in range(1, 9) :
+                                    if cplateau[(x, 5)] == cvide :
+                                        try :
+                                            if col+"_" in ch_pions[(x+movexy*help_movex, y-movexy*help_movey)][0] :
+                                                break
+                                            elif my_color+"_" in ch_pions[(x+movexy*help_movex, y-movexy*help_movey)][0] :
+                                                pre_move.append((x+movexy*help_movex, y-movexy*help_movey)) #appliquer un filtre jaune
+                                                break
+                                        except :
+                                            break
+
+                        for move in [[(x, 0) for x in range(-1, -8, -1)], [(x, 0) for x in range(1, 8)], [(0, y) for y in range(-1, -8, -1)], [(0, y) for y in range(1, 8)]] :
+                            for moveplus in move :
+                                if cplateau[(x, 5)] == cvide :
+                                    try :
+                                        if col+"_" in ch_pions[(x+moveplus[0], y-moveplus[1])][0] :
+                                            break
+                                        elif my_color+"_" in ch_pions[(x+moveplus[0], y-moveplus[1])][0] :
+                                            pre_move.append((x+moveplus[0], y-moveplus[1])) #appliquer un filtre jaune
+                                            break
+                                    except :
+                                        break
+    if king_coords in pre_move :
+        return True
+    return False
 
 
 #threads
