@@ -637,6 +637,138 @@ def test_mat() :
 
 
 
+def ajout_pre_move_visualisation(x, y) :
+    global cplateau, coords_pre_move, coords_select, ch_pions
+    coords_pre_move = []
+    coords_select = (x, y)
+    if len(ch_pions[(x, y)]) == 0 :
+        return
+    if echec != None :
+        try :
+            for k in range(len(echec_pre_move[(x, y)])) :
+                coords_pre_move.append([echec_pre_move[(x, y)][k][0], echec_pre_move[(x, y)][k][1]])
+        except :
+            pass
+        return
+    
+    if "pawn" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+        if y == 1 :
+            dos = 3
+        else :
+            dos = 2
+        for move in range(1, dos) :
+            try :
+                if cplateau[(x, 5)] == cvide :
+                    if len(ch_pions[(x, y+move)]) == 0 :
+                        coords_pre_move.append(["move_to_vide", (x, y+move)])
+                    else :
+                        break
+            except :
+                pass
+
+        for move in [(1, 1), (-1, 1)] :
+            try :
+                if cplateau[(x, 5)] == cvide :
+                    if len(ch_pions[(x+move[0], y+move[1])]) != 0 and my_color+"_" not in ch_pions[(x+move[0], y+move[1])][0]:
+                        coords_pre_move.append(["move_to_eat", (x+move[0], y+move[1])])
+            except :
+                pass
+
+    elif "knight" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+        help_var_knight = [(-2, 1), (-2, -1), (-1, -2), (1, -2), (2-1), (2, 1), (1, 2), (-1, 2)]
+        for move in help_var_knight :
+            if cplateau[(x, 5)] == cvide:
+                try :
+                    if len(ch_pions[(x+move[0], y+move[1])]) == 0 :
+                        coords_pre_move.append(["move_to_vide", (x+move[0], y+move[1])])
+                    elif my_color+"_" not in ch_pions[(x+move[0], y+move[1])][0] :
+                        coords_pre_move.append(["move_to_eat", (x+move[0], y+move[1])]) #appliquer un filtre jaune
+                except :
+                    pass
+
+    elif "rook" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+        for move in [[(x, 0) for x in range(-1, -8, -1)], [(x, 0) for x in range(1, 8)], [(0, y) for y in range(-1, -8, -1)], [(0, y) for y in range(1, 8)]] :
+            for moveplus in move :
+               if cplateau[(x, 5)] == cvide :
+                   try :
+                        if len(ch_pions[(x+moveplus[0], y+moveplus[1])]) == 0 :
+                            coords_pre_move.append(["move_to_vide", (x+moveplus[0], y+moveplus[1])])
+                        
+                        elif my_color+"_" in ch_pions[(x+moveplus[0], y+moveplus[1])][0] :
+                            break
+                        else :
+                            coords_pre_move.append(["move_to_eat", (x+moveplus[0], y+moveplus[1])]) #appliquer un filtre jaune
+                            break
+                   except :
+                       break
+
+    elif "king" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+       for movex in [-1, 0, 1] :
+           for movey in [-1, 0, 1] :
+               if cplateau[(x, 5)] == cvide and not (movex == 0 and movey == 0):
+                   try :
+                       if len(ch_pions[(x+movex, y+movey)]) == 0 :
+                           coords_pre_move.append(["move_to_vide", (x+movex, y+movey)])
+                       elif my_color+"_" not in ch_pions[(x+movex, y+movey)][0] :
+                           coords_pre_move.append(["move_to_eat", (x+movex, y+movey)]) #appliquer un filtre jaune
+                   except :
+                       pass
+
+    elif "bishop" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+        for help_movex in [-1, 1] :
+            for help_movey in [-1, 1] :
+                for movexy in range(1, 9) :
+                    if cplateau[(x, 5)] == cvide :
+                        try :
+                            if len(ch_pions[(x+movexy*help_movex, y+movexy*help_movey)]) == 0 :
+                                coords_pre_move.append(["move_to_vide", (x+movexy*help_movex, y+movexy*help_movey)])
+                            elif my_color+"_" in ch_pions[(x+movexy*help_movex, y+movexy*help_movey)][0] :
+                                break
+                            else :
+                                coords_pre_move.append(["move_to_eat", (x+movexy*help_movex, y+movexy*help_movey)]) #appliquer un filtre jaune
+                                break
+                        except :
+                            break
+
+    elif "queen" in ch_pions[(x, y)][0] and my_color+"_" in ch_pions[(x, y)][0] :
+
+        for help_movex in [-1, 1] :
+            for help_movey in [-1, 1] :
+                for movexy in range(1, 9) :
+                    if cplateau[(x, 5)] == cvide :
+                        try :
+                            if len(ch_pions[(x+movexy*help_movex, y+movexy*help_movey)]) == 0 :
+                                coords_pre_move.append(["move_to_vide", (x+movexy*help_movex, y+movexy*help_movey)])
+                            elif my_color+"_" in ch_pions[(x+movexy*help_movex, y+movexy*help_movey)][0] :
+                                break
+                            else :
+                                coords_pre_move.append(["move_to_eat", (x+movexy*help_movex, y+movexy*help_movey)]) #appliquer un filtre jaune
+                                break
+                        except :
+                            break
+
+        for move in [[(x, 0) for x in range(-1, -8, -1)], [(x, 0) for x in range(1, 8)], [(0, y) for y in range(-1, -8, -1)], [(0, y) for y in range(1, 8)]] :
+            for moveplus in move :
+               if cplateau[(x, 5)] == cvide :
+                   try :
+                        if len(ch_pions[(x+moveplus[0], y+moveplus[1])]) == 0 :
+                            coords_pre_move.append(["move_to_vide", (x+moveplus[0], y+moveplus[1])])
+                        
+                        elif my_color+"_" in ch_pions[(x+moveplus[0], y+moveplus[1])][0] :
+                            break
+                        else :
+                            coords_pre_move.append(["move_to_eat", (x+moveplus[0], y+moveplus[1])]) #appliquer un filtre jaune
+                            break
+                   except :
+                       break
+    else :
+        coords_select = None
+
+
+
 
 #threads
 def anti_hold_clic():
